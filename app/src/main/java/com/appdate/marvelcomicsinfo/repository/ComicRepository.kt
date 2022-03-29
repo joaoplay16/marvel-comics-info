@@ -1,17 +1,7 @@
 package com.appdate.marvelcomicsinfo.repository
 
-import android.util.Log
-import androidx.compose.runtime.*
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.appdate.marvelcomicsinfo.util.RetrofitService
-import com.appdate.retrofit.ComicResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.math.BigInteger
-import java.security.MessageDigest
-import java.sql.Timestamp
+import com.appdate.marvelcomicsinfo.model.ComicResponse
 
 class ComicRepository {
 

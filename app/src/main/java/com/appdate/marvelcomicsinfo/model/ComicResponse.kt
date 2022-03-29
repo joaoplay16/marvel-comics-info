@@ -1,5 +1,6 @@
-package com.appdate.retrofit
+package com.appdate.marvelcomicsinfo.model
 
+import com.appdate.marvelcomicsinfo.model.Data
 import com.google.gson.annotations.SerializedName
 
 class ComicResponse (

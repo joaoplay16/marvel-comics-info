@@ -1,28 +1,29 @@
-package com.appdate.retrofit
+package com.appdate.marvelcomicsinfo.model
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import java.io.Serializable
 
+@Parcelize
 class Comic (
     @SerializedName("id")
     @Expose
-    var id: Int,
+    val id: Int,
     @SerializedName("title")
     @Expose
-    var title: String,
+    val title: String,
     @SerializedName("thumbnail")
     @Expose
-    var thumbnail: Thumbnail,
+    val thumbnail: Thumbnail,
     @SerializedName("description")
     @Expose
-    var description: String,
+    val description: String?,
     @SerializedName("creators")
     @Expose
-    var creators: Creators
-        ): Serializable {
-
+    val creators: Creators?
+): Parcelable {
     override fun toString(): String {
-        return creators.creatorsItems.toString() + "\n"
+        return creators?.creatorsItems.toString() + "\n"
     }
-        }
+}

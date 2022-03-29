@@ -1,8 +1,7 @@
 package com.appdate.marvelcomicsinfo.repository
 
 import com.appdate.marvelcomicsinfo.util.RetrofitService
-import com.appdate.retrofit.ComicResponse
-import retrofit2.Call
+import com.appdate.marvelcomicsinfo.model.ComicResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

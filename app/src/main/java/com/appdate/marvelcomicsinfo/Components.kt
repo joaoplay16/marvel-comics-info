@@ -1,10 +1,7 @@
 package com.appdate.marvelcomicsinfo
 
-import android.util.Log
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
@@ -23,7 +20,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
@@ -34,9 +30,9 @@ fun ComicCard(
     modifier: Modifier,
     imageUrl: String,
     title: String,
-    description: String?
+    description: String?,
+    onComicClick: () -> Unit
 ) {
-    val context = LocalContext.current
     Card(
         modifier = modifier,
         elevation = 3.dp,
@@ -45,27 +41,23 @@ fun ComicCard(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            val context = LocalContext.current
+
             val painter = rememberAsyncImagePainter(
                 model = ImageRequest.Builder(context)
                     .data(imageUrl)
+                    .placeholder(R.drawable.image_placeholder)
                     .size(Size.ORIGINAL)
-                    .build()
+                    .build(),
             )
-            if (painter.state is AsyncImagePainter.State.Success){
-                Image(
-                    modifier = Modifier.fillMaxSize(),
-                    painter = painter,
-                    contentDescription = title,
-                    contentScale = ContentScale.Crop,
-                )
-            }else{
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                        .background(color = MaterialTheme.colors.secondary)
-                )
-            }
+            Image(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable { onComicClick() },
+                painter = painter,
+                contentDescription = title,
+                contentScale = ContentScale.Crop,
+            )
 
             val expanded = remember { mutableStateOf(false) }
             val hasDescription = !description.isNullOrEmpty()
@@ -79,30 +71,21 @@ fun ComicCard(
                     },
                 color = MaterialTheme.colors.onSurface,
                 textAlign = TextAlign.Center
-                )
+            )
 
             Box(
                 modifier =
                 Modifier
                     .fillMaxWidth()
-                    .animateContentSize(
-                        animationSpec = tween(
-                            300,
-                            0,
-                            LinearOutSlowInEasing
-                        )
-                    )
+                    .animateContentSize()
             ) {
-
-
                 if (expanded.value && hasDescription) {
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
                         text = description!!,
                         Modifier.padding(10.dp),
                         color = MaterialTheme.colors.onSurface,
-
-                        )
+                    )
                 }
             }
         }
@@ -145,7 +128,6 @@ fun ComicTextInfo(label: String, info: String) {
                 .padding(horizontal = 10.dp),
         )
     }
-
 }
 
 @Preview(showBackground = true)
@@ -170,6 +152,6 @@ fun ComicCardPreview() {
             imageUrl = "hl.us/u/prod/marvel/i/mg/1/00/51644d6b47668.jpg",
             title = "Titulo",
             description = "description"
-        )
-}
+        ) { }
+    }
 }

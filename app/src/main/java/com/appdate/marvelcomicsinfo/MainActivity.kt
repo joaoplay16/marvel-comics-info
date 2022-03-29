@@ -9,15 +9,18 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.core.net.toUri
+import androidx.navigation.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.appdate.marvelcomicsinfo.ui.theme.MarvelComicsInfoTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.appdate.marvelcomicsinfo.model.Comic
 
 class MainActivity : ComponentActivity() {
     private lateinit var myContext: Context
@@ -32,7 +35,6 @@ class MainActivity : ComponentActivity() {
                        modifier = Modifier.fillMaxSize(),
                        color = MaterialTheme.colors.surface
                    ) {
-//                SingleComicScreen()
                        ComicsActivityScreen()
                    }
                }
@@ -40,12 +42,75 @@ class MainActivity : ComponentActivity() {
 
     }
 
+
+
     @Composable
     fun ComicsActivityScreen() {
-        ComicsScreen(comicsViewModel)
+        val navController = rememberNavController()
+        MarvelNavHost(navController = navController, modifier = Modifier)
+    }
+
+    @Composable
+    fun MarvelNavHost(
+        navController: NavHostController,
+        modifier: Modifier
+    ) {
+        NavHost(
+            navController = navController,
+            startDestination = MarvelScreen.Series.name,
+            modifier = modifier
+        ){
+            composable(MarvelScreen.Series.name){ backStackEntry ->
+
+                ComicsScreen(
+                    viewModel = comicsViewModel,
+                    onComicClick = {
+                        val bundle = Bundle().apply { putParcelable("comic", it) }
+                        navigateToSingleScreen(navController, MarvelScreen.SingleSerie.name, bundle)
+                    })
+
+            }
+            composable(MarvelScreen.SingleSerie.name){ backStackEntry ->
+                val comic = backStackEntry.arguments?.getParcelable<Comic>("comic")
+                Log.d("COMIC", "${ comic?.title}")
+
+                SingleComicScreen(comic)
+            }
+        }
     }
 }
 
 
+private fun navigateToSingleScreen(
+    navController: NavHostController,
+    screen: String,
+    args: Bundle?
+) {
+    if (args == null){
+        navController.navigate(screen)
+        return
+    }
+    navController.navigate(MarvelScreen.SingleSerie.name, args)
+}
 
 
+fun NavHostController.navigate(
+    route: String,
+    args: Bundle,
+    navOptions: NavOptions? = null,
+    navigatorExtras: Navigator.Extras? = null
+) {
+    val routeLink = NavDeepLinkRequest
+        .Builder
+        .fromUri(NavDestination.createRoute(route).toUri())
+        .build()
+
+    val deepLinkMatch = graph.matchDeepLink(routeLink)
+    if (deepLinkMatch != null) {
+        val destination = deepLinkMatch.destination
+        val id = destination.id
+        navigate(id, args, navOptions, navigatorExtras)
+    } else {
+        navigate(route, navOptions, navigatorExtras)
+    }
+}
