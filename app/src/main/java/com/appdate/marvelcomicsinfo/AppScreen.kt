@@ -2,15 +2,15 @@ package com.appdate.marvelcomicsinfo
 
 import java.lang.IllegalArgumentException
 
-enum class MarvelScreen {
+enum class AppScreen {
     Series,
-    SingleSerie;
+    SerieDetails;
 
     companion object {}
-    fun fromRoute(route: String?): MarvelScreen =
+    fun fromRoute(route: String?): AppScreen =
         when (route?.substringBefore("/")){
             Series.name -> Series
-            SingleSerie.name -> SingleSerie
+            SerieDetails.name -> SerieDetails
             null -> Series
             else -> throw IllegalArgumentException("Route $route is not recognized.")
         }
