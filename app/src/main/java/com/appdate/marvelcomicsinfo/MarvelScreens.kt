@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.appdate.marvelcomicsinfo.ui.theme.MarvelComicsInfoTheme
@@ -41,11 +42,11 @@ fun ComicsScreen(
         topBar = { TopAppBar() },
     ) {
         val comicsResponse by viewModel.comics.observeAsState()
-
+        val dbComics = viewModel.dbComics.collectAsLazyPagingItems()
         if(comicsResponse != null) {
             Column {
                 LazyColumn(Modifier.weight(1f)) {
-                    val items = comicsResponse!!.data!!.results!!.filterNot {
+                    val items = dbComics.itemSnapshotList.items.filterNot {
                         it.thumbnail.path!!.matches(Regex("^.*/image_not_available\$"))
                     }
 

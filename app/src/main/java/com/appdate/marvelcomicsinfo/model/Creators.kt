@@ -9,5 +9,4 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class Creators (
     @SerializedName("items")
-    @Expose
     val creatorsItems: List<Creator>): Parcelable

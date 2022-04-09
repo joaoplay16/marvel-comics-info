@@ -16,7 +16,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.appdate.marvelcomicsinfo.ui.theme.MarvelComicsInfoTheme
 import com.appdate.marvelcomicsinfo.model.Comic
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var myContext: Context
     val comicsViewModel by viewModels<ComicsViewModel>()

@@ -1,26 +1,24 @@
 package com.appdate.marvelcomicsinfo.model
 import android.os.Parcelable
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.appdate.marvelcomicsinfo.util.Constants.MARVEL_COMIC_TABLE
 import kotlinx.parcelize.Parcelize
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 @Parcelize
+@Entity(tableName = MARVEL_COMIC_TABLE)
 class Comic (
-    @SerializedName("id")
-    @Expose
+    @PrimaryKey(autoGenerate = false)
     val id: Int,
-    @SerializedName("title")
-    @Expose
     val title: String,
-    @SerializedName("thumbnail")
-    @Expose
+    @Embedded
     val thumbnail: Thumbnail,
-    @SerializedName("description")
-    @Expose
     val description: String?,
-    @SerializedName("creators")
-    @Expose
+    @Embedded
     val creators: Creators?
 ): Parcelable {
     override fun toString(): String {
