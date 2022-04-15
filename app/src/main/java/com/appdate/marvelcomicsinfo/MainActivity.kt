@@ -9,19 +9,28 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.appdate.marvelcomicsinfo.ui.theme.MarvelComicsInfoTheme
 import com.appdate.marvelcomicsinfo.model.Comic
+import com.appdate.marvelcomicsinfo.screens.home.ComicsViewModel
+import com.appdate.marvelcomicsinfo.screens.ScreenRoutes
+import com.appdate.marvelcomicsinfo.screens.home.ComicsScreen
+import com.appdate.marvelcomicsinfo.screens.details.ComicDetailScreen
+import com.appdate.marvelcomicsinfo.screens.search.SearchScreen
 import dagger.hilt.android.AndroidEntryPoint
-
+@ExperimentalPagingApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var myContext: Context
-    val comicsViewModel by viewModels<ComicsViewModel>()
+    private val comicsViewModel by viewModels<ComicsViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         myContext = this
@@ -49,37 +58,43 @@ class MainActivity : ComponentActivity() {
         navController: NavHostController,
         modifier: Modifier
     ) {
+        val comics = comicsViewModel.dbComics.collectAsLazyPagingItems()
+        val copyright by comicsViewModel.copyright.collectAsState(null)
         NavHost(
             navController = navController,
-            startDestination = AppScreen.Series.name,
+            startDestination = ScreenRoutes.Comics.name,
             modifier = modifier
         ){
-            composable(AppScreen.Series.name){
-
+            composable(ScreenRoutes.Comics.name){
                 ComicsScreen(
-                    viewModel = comicsViewModel,
+                    items = comics,
+                    copyright = copyright,
+                    onSearchClicked = { navigateToScreen(navController, ScreenRoutes.ComicSearch.name)},
                     onComicClick = {
-                        navController.currentBackStackEntry?.savedStateHandle?.set("comicAndCopyright", it)
-                        navigateToSingleScreen(navController, AppScreen.SerieDetails.name)
-                    })
-
+                        navController.currentBackStackEntry?.savedStateHandle?.set("comic", it)
+                        navigateToScreen(navController, ScreenRoutes.ComicDetails.name)
+                    }
+                )
             }
-            composable(AppScreen.SerieDetails.name){
-                val comicAndCopyright =
-                        navController.previousBackStackEntry
+            composable(ScreenRoutes.ComicDetails.name){
+                val comic =
+                    navController.previousBackStackEntry
                         ?.savedStateHandle
-                        ?.get<Pair<Comic, String>>("comicAndCopyright")
+                        ?.get<Comic>("comic")
 
-                comicAndCopyright?.let {
-                    SingleComicScreen(comicAndCopyright, navController)
+                comic?.let {
+                    ComicDetailScreen(comic, copyright, navController)
                 }
+            }
+            composable(route = ScreenRoutes.ComicSearch.name){
+                SearchScreen(navController = navController)
             }
         }
     }
 }
 
 
-private fun navigateToSingleScreen(
+private fun navigateToScreen(
     navController: NavHostController,
     screen: String,
 ) {

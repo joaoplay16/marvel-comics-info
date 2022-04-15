@@ -1,6 +1,12 @@
 package com.appdate.marvelcomicsinfo.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import com.appdate.marvelcomicsinfo.data.local.MarvelDatabase
 import com.appdate.marvelcomicsinfo.util.Constants.MARVEL_DATABASE
@@ -14,7 +20,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-
     @Provides
     @Singleton
     fun provideDatabase(
@@ -27,4 +32,12 @@ object DatabaseModule {
         ).build()
     }
 
+    @Provides
+    @Singleton
+    fun providePreferencesDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> =
+        PreferenceDataStoreFactory.create(
+            produceFile = {
+                appContext.preferencesDataStoreFile("settings")
+            }
+        )
 }

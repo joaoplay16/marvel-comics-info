@@ -1,22 +1,32 @@
-package com.appdate.marvelcomicsinfo
+package com.appdate.marvelcomicsinfo.screens
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -24,9 +34,114 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberAsyncImagePainter
+import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.appdate.marvelcomicsinfo.R
 import com.appdate.marvelcomicsinfo.ui.theme.MarvelComicsInfoTheme
+import com.appdate.marvelcomicsinfo.ui.theme.topAppBarContentColor
+
+@Composable
+fun AppTopAppBar(
+    title: String? = null,
+    navigationIcon: @Composable (() -> Unit)? = null,
+    actions: @Composable RowScope.() -> Unit = {}
+) {
+    return TopAppBar(
+        title = { Text(text = title ?: stringResource(R.string.app_name)) },
+        backgroundColor = MaterialTheme.colors.primary,
+        navigationIcon = navigationIcon,
+        actions = actions
+    )
+}
+
+@Composable
+fun SearchWidget(
+    text: String,
+    onTextChange: (String) -> Unit,
+    onSearchClicked: (String) -> Unit,
+    onCloseClicked: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .semantics {
+                contentDescription = "SearchWidget"
+            },
+        elevation = AppBarDefaults.TopAppBarElevation,
+        color = MaterialTheme.colors.primary
+    ) {
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .semantics {
+                    contentDescription = "TextField"
+                },
+            value = text,
+            onValueChange = { onTextChange(it) },
+            placeholder = {
+                Text(
+                    modifier = Modifier
+                        .alpha(alpha = ContentAlpha.medium),
+                    text = "Search here...",
+                    color = Color.White
+                )
+            },
+            textStyle = TextStyle(
+                color = MaterialTheme.colors.topAppBarContentColor
+            ),
+            singleLine = true,
+            leadingIcon = {
+                IconButton(
+                    modifier = Modifier
+                        .alpha(alpha = ContentAlpha.medium),
+                    onClick = {}
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Search Icon",
+                        tint = MaterialTheme.colors.topAppBarContentColor
+                    )
+                }
+            },
+            trailingIcon = {
+                IconButton(
+                    modifier = Modifier
+                        .semantics {
+                            contentDescription = "CloseButton"
+                        },
+                    onClick = {
+                        if (text.isNotEmpty()) {
+                            onTextChange("")
+                        } else {
+                            onCloseClicked()
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Close Icon",
+                        tint = MaterialTheme.colors.topAppBarContentColor
+                    )
+                }
+            },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Search
+            ),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    onSearchClicked(text)
+                }
+            ),
+            colors = TextFieldDefaults.textFieldColors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                backgroundColor = Color.Transparent,
+                cursorColor = MaterialTheme.colors.topAppBarContentColor
+            )
+        )
+    }
+}
 
 @Composable
 fun ComicCard(
@@ -37,6 +152,7 @@ fun ComicCard(
     description: String? = null,
     onComicClick: () -> Unit = {},
 ) {
+
     Card(
         modifier = modifier,
         elevation = elevation,
@@ -50,18 +166,20 @@ fun ComicCard(
         ) {
             val context = LocalContext.current
 
-            val painter = rememberAsyncImagePainter(
-                model = ImageRequest.Builder(context)
+            val imageRequest = remember {
+                ImageRequest.Builder(context)
                     .data(imageUrl)
-                    .crossfade(300)
+                    .error(R.drawable.image_placeholder)
                     .placeholder(R.drawable.image_placeholder)
-                    .build(),
-            )
-            Image(
+                    .crossfade(300)
+                    .build()
+            }
+
+            AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { onComicClick() },
-                painter = painter,
+                model = imageRequest,
                 contentDescription = title,
                 contentScale = ContentScale.Crop,
             )

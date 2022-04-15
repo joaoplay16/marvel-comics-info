@@ -10,7 +10,7 @@ import com.appdate.marvelcomicsinfo.model.MarvelRemoteKeys
 interface MarvelRemoteKeysDao {
 
     @Query("SELECT * FROM marvel_remote_keys_table WHERE id =:id")
-    suspend fun getRemoteKeys(id: Int): MarvelRemoteKeys
+    suspend fun getRemoteKeys(id: String): MarvelRemoteKeys
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addAllRemoteKeys(remoteKeys: List<MarvelRemoteKeys>)

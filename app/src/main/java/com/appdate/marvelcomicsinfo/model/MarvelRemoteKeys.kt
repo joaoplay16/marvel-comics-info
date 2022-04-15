@@ -7,7 +7,11 @@ import com.appdate.marvelcomicsinfo.util.Constants.MARVEL_REMOTE_KEYS_TABLE
 @Entity(tableName = MARVEL_REMOTE_KEYS_TABLE)
 data class MarvelRemoteKeys(
     @PrimaryKey(autoGenerate = false)
-    val id: Int,
+    val id: String,
     val prevPage: Int?,
     val nextPage: Int?
-)
+){
+    override fun toString(): String {
+        return "ID $id, prevPage $prevPage, nextPage $nextPage"
+    }
+}

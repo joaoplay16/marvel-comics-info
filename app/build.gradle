@@ -60,10 +60,9 @@ dependencies {
     implementation 'androidx.compose.runtime:runtime-livedata:1.2.0-alpha07'
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
-    implementation "androidx.navigation:navigation-compose:2.5.0-alpha03"
 
     // Compose Navigation
-    implementation("androidx.navigation:navigation-compose:2.5.0-alpha03")
+    implementation("androidx.navigation:navigation-compose:2.5.0-alpha04")
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -90,6 +89,8 @@ dependencies {
 
     // Coil
     implementation "io.coil-kt:coil-compose:2.0.0-rc02"
+
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

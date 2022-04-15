@@ -9,15 +9,12 @@ object Constants {
     const val MARVEL_COMIC_TABLE = "marvel_comic_table"
     const val MARVEL_REMOTE_KEYS_TABLE = "marvel_remote_keys_table"
 
-    val BASE_URL = "https://gateway.marvel.com/v1/public/"
+    const val BASE_URL = "https://gateway.marvel.com/v1/public/"
     val ts = Timestamp(System.currentTimeMillis()).time.toString()
-    val API_KEY = "aa0ee75f268fcf31ee28ff428eee0904"
-    val PRIVATE_KEY = "d88b9acfc6f346aa7b3abec5788fa478845a9a8b"
+    const val API_KEY = "96a7de2acfe9f0e5142aa404b765ee32"
+    const val PRIVATE_KEY = "b7e88947e5515ae21d44d5dcc35dcb81068b63a8"
 
-    val ITEMS_PER_PAGE = 10
-
-
-
+    const val ITEMS_PER_PAGE = 10
 
     fun generateMd5Hash(): String{
         val input = "$ts$PRIVATE_KEY$API_KEY"

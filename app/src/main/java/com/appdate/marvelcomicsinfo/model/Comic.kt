@@ -13,7 +13,7 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = MARVEL_COMIC_TABLE)
 class Comic (
     @PrimaryKey(autoGenerate = false)
-    val id: Int,
+    val id: String,
     val title: String,
     @Embedded
     val thumbnail: Thumbnail,
@@ -22,6 +22,6 @@ class Comic (
     val creators: Creators?
 ): Parcelable {
     override fun toString(): String {
-        return creators?.creatorsItems.toString() + "\n"
+        return "ID $id - $title"
     }
 }
