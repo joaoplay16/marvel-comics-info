@@ -1,14 +1,10 @@
 package com.appdate.marvelcomicsinfo
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,6 +25,7 @@ import com.appdate.marvelcomicsinfo.screens.search.SearchScreen
 import com.appdate.marvelcomicsinfo.ui.theme.MarvelComicsInfoTheme
 import com.appdate.marvelcomicsinfo.ui.theme.ThemeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
 @ExperimentalCoilApi
 @ExperimentalPagingApi
 @AndroidEntryPoint
@@ -39,15 +36,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-    val isDarkTheme by themeViewModel.isDarkTheme.collectAsState(initial = null)
+            val isDarkTheme by themeViewModel.isDarkTheme.collectAsState(initial = null)
             MarvelComicsInfoTheme(darkTheme = isDarkTheme ?: isSystemInDarkTheme()) {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.surface
-                ) {
-                    ComicsActivityScreen()
-                }
+                ComicsActivityScreen()
             }
         }
     }
@@ -79,9 +70,7 @@ class MainActivity : ComponentActivity() {
                     items = comics,
                     copyright = copyright,
                     onSearchClicked = { navigateToScreen(navController, ScreenRoutes.ComicSearch.name)},
-                    onSwitchClicked = { themeViewModel.switchTheme(isDarkTheme)
-                                      Log.d("THEME", "$isDarkTheme")
-                                      },
+                    onSwitchClicked = { themeViewModel.switchTheme(isDarkTheme) },
                     onComicClick = {
                         navController.currentBackStackEntry?.savedStateHandle?.set("comic", it)
                         navigateToScreen(navController, ScreenRoutes.ComicDetails.name)

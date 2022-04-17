@@ -21,7 +21,7 @@ fun SearchScreen(
     searchViewModel: SearchViewModel = hiltViewModel()
 ) {
     val searchQuery by searchViewModel.searchQuery
-    val searchedComics = searchViewModel.searchedImages.collectAsLazyPagingItems()
+    val searchedComics = searchViewModel.searchedComics.collectAsLazyPagingItems()
 
     Scaffold(
         topBar = {
