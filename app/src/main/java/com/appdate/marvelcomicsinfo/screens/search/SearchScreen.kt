@@ -17,6 +17,7 @@ import com.appdate.marvelcomicsinfo.screens.common.ListComic
 @Composable
 fun SearchScreen(
     navController: NavHostController,
+    copyright: String?,
     searchViewModel: SearchViewModel = hiltViewModel()
 ) {
     val searchQuery by searchViewModel.searchQuery
@@ -39,7 +40,7 @@ fun SearchScreen(
         },
         content = {
             ListComic(items = searchedComics,
-                copyright = "",
+                copyright = copyright,
                 onComicClick = {
                     navController.currentBackStackEntry?.savedStateHandle?.set("comic", it)
                     navController.navigate(ScreenRoutes.ComicDetails.name)

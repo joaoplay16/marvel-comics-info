@@ -252,7 +252,7 @@ fun TextInfo(info: String) {
     val fontFamily = FontFamily(Font(R.font.roboto_condensed_regular))
     CompositionLocalProvider( LocalContentAlpha provides 0.7f) {
         Text(
-            text = info.capitalize(Locale("pt-BR")),
+            text = info.capitalize(Locale("en-US")),
             style = TextStyle(
                 fontSize = 18.sp,
                 fontFamily = fontFamily,

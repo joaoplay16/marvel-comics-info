@@ -1,6 +1,5 @@
 package com.appdate.marvelcomicsinfo.data.remote
 
-import android.app.appsearch.SearchResult
 import com.appdate.marvelcomicsinfo.model.ComicResponse
 import com.appdate.marvelcomicsinfo.util.Constants
 import retrofit2.http.GET
@@ -26,6 +25,6 @@ interface ApiInterface {
         @Query("limit") limit: Int = Constants.ITEMS_PER_PAGE,
         @Query("titleStartsWith") query: String,
         @Query("offset") offset: Int = 0,
-        @Query("orderBy") orderBy: String = "modified"
+        @Query("orderBy") orderBy: String = "-modified"
     ) : ComicResponse
 }

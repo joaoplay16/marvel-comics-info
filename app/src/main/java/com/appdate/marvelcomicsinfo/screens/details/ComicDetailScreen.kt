@@ -56,6 +56,7 @@ fun ComicDetailScreen(comic: Comic, copyright: String?, navHostController: NavHo
                         ImageRequest.Builder(LocalContext.current)
                             .data("${comic.thumbnail.path}.${comic.thumbnail.extension}")
                             .crossfade(true)
+                            .placeholder(R.drawable.image_placeholder)
                             .build(),
                         contentDescription = comic.title,
                         modifier = Modifier.fillMaxSize(),

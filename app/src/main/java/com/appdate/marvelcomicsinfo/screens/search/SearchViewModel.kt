@@ -30,11 +30,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun searchComics(query: String) {
-        viewModelScope.launch {
-            repository.searchComics(query = query).cachedIn(viewModelScope).collect {
-                _searchedImages.value = it
-            }
-        }
+
     }
 
 }
