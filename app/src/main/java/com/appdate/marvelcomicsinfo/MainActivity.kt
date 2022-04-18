@@ -5,9 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -36,8 +34,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val isDarkTheme by themeViewModel.isDarkTheme.collectAsState(initial = null)
-            MarvelComicsInfoTheme(darkTheme = isDarkTheme ?: isSystemInDarkTheme()) {
+           val darkTheme by themeViewModel.isDarkTheme.collectAsState(null)
+            MarvelComicsInfoTheme(
+                darkTheme = darkTheme ?: isSystemInDarkTheme()
+
+            ) {
                 ComicsActivityScreen()
             }
         }
@@ -58,7 +59,8 @@ class MainActivity : ComponentActivity() {
     ) {
         val comics = comicsViewModel.dbComics.collectAsLazyPagingItems()
         val copyright by comicsViewModel.copyright.collectAsState(null)
-        val isDarkTheme by themeViewModel.isDarkTheme.collectAsState(initial = null)
+        val isThemeStored by themeViewModel.isDarkTheme.collectAsState(null)
+        val isSystemInDarkTheme = isSystemInDarkTheme()
 
         NavHost(
             navController = navController,
@@ -70,7 +72,7 @@ class MainActivity : ComponentActivity() {
                     items = comics,
                     copyright = copyright,
                     onSearchClicked = { navigateToScreen(navController, ScreenRoutes.ComicSearch.name)},
-                    onSwitchClicked = { themeViewModel.switchTheme(isDarkTheme) },
+                    onSwitchClicked = { themeViewModel.switchTheme(isThemeStored, isSystemInDarkTheme) },
                     onComicClick = {
                         navController.currentBackStackEntry?.savedStateHandle?.set("comic", it)
                         navigateToScreen(navController, ScreenRoutes.ComicDetails.name)
@@ -93,7 +95,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 
 private fun navigateToScreen(
     navController: NavHostController,

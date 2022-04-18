@@ -6,32 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.appdate.marvelcomicsinfo.data.preferences.PreferencesDataStore
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ThemeViewModel @Inject constructor(
     private val dataStore: PreferencesDataStore
-    ): ViewModel(){
+): ViewModel(){
 
-    val isDarkTheme : Flow<Boolean?> get() = dataStore.isDarkTheme
-    private var _isDarkTheme: MutableState<Boolean> =
-        mutableStateOf(false)
+    val isDarkTheme get() = dataStore.isDarkTheme
 
-
-    fun switchTheme(isDark: Boolean?){
+    fun switchTheme(storedThemeValue: Boolean?, isSystemInDarkTheme: Boolean){
         viewModelScope.launch {
-
-               if (isDark == null) {
-                   _isDarkTheme.value = false
-                   dataStore.setDarkTheme(false)
-               } else {
-                   _isDarkTheme.value = !isDark
-                   dataStore.setDarkTheme(!isDark)
-               }
-
+            if (storedThemeValue == null) dataStore.setDarkTheme(!isSystemInDarkTheme)
+            else dataStore.setDarkTheme(!storedThemeValue)
         }
     }
 }
