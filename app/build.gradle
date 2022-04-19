@@ -11,7 +11,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.appdate.marvelcomicsinfo"
+        applicationId "com.playlab.marvelcomicsinfo"
         minSdk 21
         targetSdk 32
         versionCode 1
@@ -20,6 +20,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
+
+        buildConfigField("String", "API_KEY", API_KEY)
+        buildConfigField("String", "PRIVATE_KEY", PRIVATE_KEY)
         }
     }
 
@@ -90,6 +93,7 @@ dependencies {
     // Coil
     implementation "io.coil-kt:coil-compose:2.0.0-rc02"
 
+    //DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     testImplementation 'junit:junit:4.13.2'
