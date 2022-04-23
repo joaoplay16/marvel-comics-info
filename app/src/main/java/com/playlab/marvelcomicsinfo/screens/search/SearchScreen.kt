@@ -3,11 +3,13 @@ package com.playlab.marvelcomicsinfo.screens.search
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
+import com.playlab.marvelcomicsinfo.screens.CopyrightContainer
 import com.playlab.marvelcomicsinfo.screens.ScreenRoutes
 import com.playlab.marvelcomicsinfo.screens.SearchWidget
 import com.playlab.marvelcomicsinfo.screens.common.ListComic
@@ -38,13 +40,14 @@ fun SearchScreen(
                 }
             )
         },
-        content = {
+    ){
+        CopyrightContainer(copyright) { modifier ->
             ListComic(items = searchedComics,
-                copyright = copyright,
+                modifier = modifier,
                 onComicClick = {
                     navController.currentBackStackEntry?.savedStateHandle?.set("comic", it)
                     navController.navigate(ScreenRoutes.ComicDetails.name)
                 })
         }
-    )
+    }
 }

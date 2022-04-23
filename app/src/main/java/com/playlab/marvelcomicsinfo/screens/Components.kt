@@ -277,6 +277,22 @@ fun Copyright(text: String) {
     )
 }
 
+@Composable
+fun CopyrightContainer(
+    copyright: String?,
+    content: @Composable (Modifier) -> Unit
+){
+    Column (
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center) {
+        content(Modifier.weight(1f))
+        copyright?.let {
+            Copyright(text = stringResource(R.string.data_provided, copyright))
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun ComicTextsPreview() {
