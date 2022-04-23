@@ -6,7 +6,7 @@
 # Mavel Comics Info
 
 ## About the project
-> App client for API Marvel
+> App client for Marvel API
 
 Marvel Comics Info is an app with information about Marvel comics.
 This project was created with the Jetpack Compose UI kit, the information is obtained with the help of the [Retrofit](https://square.github.io/retrofit/) library, paginated with [Paging 3](https://developer .android.com/topic/libraries/architecture/paging/v3-overview?hl=pt-br) and persisted with [Room](https://developer.android.com/training/data-storage/room) and [ Datastore](https://developer.android.com/topic/libraries/architecture/datastore?hl=pt-br).
