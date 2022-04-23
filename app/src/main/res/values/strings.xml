@@ -1,4 +1,4 @@
 <resources >
-    <string name="app_name">Marvel Comics Info</string>
+    <string name="app_name">Comics Info</string>
     <string name="data_provided">Data provided by %1$s</string>
 </resources>
