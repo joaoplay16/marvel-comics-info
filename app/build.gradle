@@ -54,18 +54,18 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.8.0'
     implementation "androidx.compose.ui:ui:$compose_version"
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.6.1'
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
-    implementation 'androidx.compose.runtime:runtime-livedata:1.2.0-alpha08'
-    implementation 'androidx.activity:activity-compose:1.4.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.0'
+    implementation 'androidx.compose.runtime:runtime-livedata:1.3.0-alpha01'
+    implementation 'androidx.activity:activity-compose:1.5.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.0'
 
     // Compose Navigation
-    implementation("androidx.navigation:navigation-compose:2.5.0-beta01")
+    implementation("androidx.navigation:navigation-compose:2.5.0")
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -82,7 +82,7 @@ dependencies {
     implementation "androidx.room:room-paging:2.4.2"
 
     // Paging 3.0
-    implementation 'androidx.paging:paging-compose:1.0.0-alpha14'
+    implementation 'androidx.paging:paging-compose:1.0.0-alpha15'
 
     // Dagger - Hilt
     implementation "com.google.dagger:hilt-android:2.39"
