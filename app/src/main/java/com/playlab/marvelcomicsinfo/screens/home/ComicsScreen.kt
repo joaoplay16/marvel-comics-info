@@ -1,11 +1,13 @@
 package com.playlab.marvelcomicsinfo.screens.home
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -23,6 +25,7 @@ import com.playlab.marvelcomicsinfo.ui.animations.LoadingAnimation
 fun ComicsScreen(
     items: LazyPagingItems<Comic>?,
     copyright: String?,
+    modifier: Modifier = Modifier,
     onComicClick: (Comic) -> Unit = {},
     onSearchClicked: () -> Unit = {},
     onSwitchClicked: () -> Unit = {}
@@ -46,8 +49,11 @@ fun ComicsScreen(
             }
         )
         },
-    ) {
-        CopyrightContainer(copyright){ modifier ->
+    ) { paddingValues ->
+        CopyrightContainer(
+            copyright = copyright,
+            modifier = modifier.padding(paddingValues)
+        ){ modifier ->
             if (items?.itemSnapshotList?.isNotEmpty() == true) {
                 ListComic(
                     modifier = modifier,

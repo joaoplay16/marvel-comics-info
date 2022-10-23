@@ -1,5 +1,6 @@
 package com.playlab.marvelcomicsinfo.screens.search
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,6 +22,7 @@ import com.playlab.marvelcomicsinfo.screens.common.ListComic
 fun SearchScreen(
     navController: NavHostController,
     copyright: String?,
+    modifier: Modifier = Modifier,
     searchViewModel: SearchViewModel = hiltViewModel()
 ) {
     val searchQuery by searchViewModel.searchQuery
@@ -42,8 +44,11 @@ fun SearchScreen(
                 }
             )
         },
-    ){
-        CopyrightContainer(copyright) { modifier ->
+    ){ paddingValues ->
+        CopyrightContainer(
+            copyright = copyright,
+            modifier = modifier.padding(paddingValues)
+        ) { modifier ->
             ListComic(items = searchedComics,
                 modifier = modifier,
                 onComicClick = {

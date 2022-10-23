@@ -43,10 +43,12 @@ import com.playlab.marvelcomicsinfo.ui.theme.topAppBarContentColor
 @Composable
 fun AppTopAppBar(
     title: String? = null,
+    modifier: Modifier= Modifier,
     navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {}
 ) {
     return TopAppBar(
+        modifier = modifier,
         title = { Text(text = title ?: stringResource(R.string.app_name)) },
         backgroundColor = MaterialTheme.colors.primary,
         navigationIcon = navigationIcon,
@@ -59,10 +61,11 @@ fun SearchWidget(
     text: String,
     onTextChange: (String) -> Unit,
     onSearchClicked: (String) -> Unit,
+    modifier: Modifier= Modifier,
     onCloseClicked: () -> Unit
 ) {
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(56.dp)
             .semantics {
@@ -145,18 +148,18 @@ fun SearchWidget(
 
 @Composable
 fun ComicCard(
-    modifier: Modifier = Modifier,
     elevation: Dp = 3.dp,
     imageUrl: String = "",
     title: String = "",
     description: String? = null,
+    modifier: Modifier = Modifier,
     onComicClick: () -> Unit = {},
 ) {
 
     Card(
-        modifier = modifier,
         elevation = elevation,
-        backgroundColor = MaterialTheme.colors.surface
+        backgroundColor = MaterialTheme.colors.surface,
+        modifier = modifier,
     ) {
         val expanded = remember { mutableStateOf(false) }
 
@@ -211,10 +214,13 @@ fun ComicCard(
 }
 
 @Composable
-fun CardTitle(text: String) {
+fun CardTitle(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
     Text(
         text = text,
-        Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = 10.dp, start = 4.dp, end = 4.dp)
           ,
@@ -231,7 +237,8 @@ fun CardTitle(text: String) {
 @Composable
 fun TextLabel(
     text: String,
-    textAlign: TextAlign = TextAlign.Start
+    textAlign: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -240,7 +247,7 @@ fun TextLabel(
             fontFamily = FontFamily(Font(R.font.roboto_condensed_regular),
             )
         ),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp),
         textAlign = textAlign
@@ -248,7 +255,10 @@ fun TextLabel(
 }
 
 @Composable
-fun TextInfo(info: String) {
+fun TextInfo(
+    info: String,
+    modifier: Modifier = Modifier,
+) {
     val fontFamily = FontFamily(Font(R.font.roboto_condensed_regular))
     CompositionLocalProvider( LocalContentAlpha provides 0.7f) {
         Text(
@@ -258,7 +268,7 @@ fun TextInfo(info: String) {
                 fontFamily = fontFamily,
             ),
 
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = 10.dp),
         )
@@ -266,9 +276,12 @@ fun TextInfo(info: String) {
 }
 
 @Composable
-fun Copyright(text: String) {
+fun Copyright(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
     Text(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth(),
         text = text,
         color = MaterialTheme.colors.onSurface,
@@ -280,10 +293,11 @@ fun Copyright(text: String) {
 @Composable
 fun CopyrightContainer(
     copyright: String?,
-    content: @Composable (Modifier) -> Unit
+    modifier: Modifier = Modifier,
+    content: @Composable (Modifier) -> Unit,
 ){
     Column (
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
         content(Modifier.weight(1f))
@@ -297,18 +311,18 @@ fun CopyrightContainer(
 @Composable
 fun ComicTextsPreview() {
     Column {
-        TextInfo("info")
+        TextInfo(info = "info")
         Spacer(modifier = Modifier.height(2.dp))
-        TextInfo("info")
+        TextInfo(info = "info")
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ComicCardPreview() {
+fun ComicCardPreview(modifier: Modifier = Modifier) {
     MarvelComicsInfoTheme {
         ComicCard(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp),
             elevation = 4.dp,
