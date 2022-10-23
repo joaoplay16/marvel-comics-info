@@ -3,6 +3,8 @@ package com.playlab.marvelcomicsinfo.screens.search
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.ExperimentalPagingApi
@@ -25,6 +27,7 @@ fun SearchScreen(
     val searchedComics = searchViewModel.searchedComics.collectAsLazyPagingItems()
 
     Scaffold(
+        modifier = Modifier.testTag(ScreenRoutes.ComicSearch.name),
         topBar = {
             SearchWidget(
                 text = searchQuery,
