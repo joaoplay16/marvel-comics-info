@@ -21,7 +21,7 @@ import com.playlab.marvelcomicsinfo.ui.animations.LoadingAnimation
 @ExperimentalPagingApi
 @Composable
 fun ComicsScreen(
-    items: LazyPagingItems<Comic>,
+    items: LazyPagingItems<Comic>?,
     copyright: String?,
     onComicClick: (Comic) -> Unit = {},
     onSearchClicked: () -> Unit = {},
@@ -48,7 +48,7 @@ fun ComicsScreen(
         },
     ) {
         CopyrightContainer(copyright){ modifier ->
-            if (items.itemSnapshotList.isNotEmpty()) {
+            if (items?.itemSnapshotList?.isNotEmpty() == true) {
                 ListComic(
                     modifier = modifier,
                     items = items,
