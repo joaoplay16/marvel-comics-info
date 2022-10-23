@@ -17,6 +17,8 @@ object Constants {
 
     const val ITEMS_PER_PAGE = 10
 
+    const val COMIC_NAV_KEY = "comic"
+
     fun generateMd5Hash(): String{
         val input = "$ts$PRIVATE_KEY$API_KEY"
         val md = MessageDigest.getInstance("MD5")

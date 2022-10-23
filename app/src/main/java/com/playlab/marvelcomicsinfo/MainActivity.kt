@@ -24,6 +24,7 @@ import com.playlab.marvelcomicsinfo.screens.search.SearchScreen
 import com.playlab.marvelcomicsinfo.screens.search.SearchViewModel
 import com.playlab.marvelcomicsinfo.ui.theme.MarvelComicsInfoTheme
 import com.playlab.marvelcomicsinfo.ui.theme.ThemeViewModel
+import com.playlab.marvelcomicsinfo.util.Constants.COMIC_NAV_KEY
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalCoilApi
@@ -73,7 +74,7 @@ fun MarvelNavHost(
                 onSearchClicked = { navigateToScreen(navController, ScreenRoutes.ComicSearch.name)},
                 onSwitchClicked = { themeViewModel.switchTheme(isThemeStored, isSystemInDarkTheme) },
                 onComicClick = {
-                    navController.currentBackStackEntry?.savedStateHandle?.set("comic", it)
+                    navController.currentBackStackEntry?.savedStateHandle?.set(COMIC_NAV_KEY, it)
                     navigateToScreen(navController, ScreenRoutes.ComicDetails.name)
                 }
             )
@@ -82,7 +83,7 @@ fun MarvelNavHost(
             val comic =
                 navController.previousBackStackEntry
                     ?.savedStateHandle
-                    ?.get<Comic>("comic")
+                    ?.get<Comic>(COMIC_NAV_KEY)
 
             comic?.let {
                 ComicDetailScreen(comic, copyright, navController)
@@ -107,7 +108,7 @@ fun MarvelNavHost(
                     navController.popBackStack()
                 },
                 onComicClick = {
-                    navController.currentBackStackEntry?.savedStateHandle?.set("comic", it)
+                    navController.currentBackStackEntry?.savedStateHandle?.set(COMIC_NAV_KEY, it)
                     navController.navigate(ScreenRoutes.ComicDetails.name)
                 }
             )
