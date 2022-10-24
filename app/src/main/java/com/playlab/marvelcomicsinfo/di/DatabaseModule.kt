@@ -5,14 +5,21 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
+import androidx.paging.ExperimentalPagingApi
 import androidx.room.Room
 import com.playlab.marvelcomicsinfo.data.local.MarvelDatabase
+import com.playlab.marvelcomicsinfo.data.preferences.PreferencesDataStore
+import com.playlab.marvelcomicsinfo.data.remote.ApiInterface
+import com.playlab.marvelcomicsinfo.model.Comic
+import com.playlab.marvelcomicsinfo.repository.ComicRepository
+import com.playlab.marvelcomicsinfo.repository.DefaultComicRepository
 import com.playlab.marvelcomicsinfo.util.Constants.MARVEL_DATABASE
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -32,10 +39,22 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun providePreferencesDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> =
+    fun provideDataStore(
+        @ApplicationContext appContext: Context
+    ): DataStore<Preferences> =
         PreferenceDataStoreFactory.create(
             produceFile = {
                 appContext.preferencesDataStoreFile("settings")
             }
         )
+
+    @OptIn(ExperimentalPagingApi::class)
+    @Provides
+    @Singleton
+    fun provideDefaultComicRepository(
+        apiInterface: ApiInterface,
+        marvelDatabase: MarvelDatabase,
+        dataStore: PreferencesDataStore
+        ) : ComicRepository =
+        DefaultComicRepository(apiInterface, marvelDatabase, dataStore)
 }
