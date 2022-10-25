@@ -52,14 +52,14 @@ class MainActivity : ComponentActivity() {
 fun MarvelNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    themeViewModel: ThemeViewModel = hiltViewModel(),
-    comicsViewModel: ComicsViewModel = hiltViewModel(),
-    searchViewModel: SearchViewModel = hiltViewModel()
+    themeViewModel: ThemeViewModel? = hiltViewModel(),
+    comicsViewModel: ComicsViewModel? = hiltViewModel(),
+    searchViewModel: SearchViewModel? = hiltViewModel()
 ) {
 
-    val comics = comicsViewModel.dbComics.collectAsLazyPagingItems()
-    val copyright by comicsViewModel.copyright.collectAsState(null)
-    val isThemeStored by themeViewModel.isDarkTheme.collectAsState(null)
+    val comics = comicsViewModel?.dbComics?.collectAsLazyPagingItems()
+    val copyright = comicsViewModel?.copyright?.collectAsState(null)?.value ?: ""
+    val isThemeStored = themeViewModel?.isDarkTheme?.collectAsState(null)?.value ?: false
     val isSystemInDarkTheme = isSystemInDarkTheme()
 
     NavHost(
@@ -72,7 +72,7 @@ fun MarvelNavHost(
                 items = comics,
                 copyright = copyright,
                 onSearchClicked = { navigateToScreen(navController, ScreenRoutes.ComicSearch.name)},
-                onSwitchClicked = { themeViewModel.switchTheme(isThemeStored, isSystemInDarkTheme) },
+                onSwitchClicked = { themeViewModel?.switchTheme(isThemeStored, isSystemInDarkTheme) },
                 onComicClick = {
                     navController.currentBackStackEntry?.savedStateHandle?.set(COMIC_NAV_KEY, it)
                     navigateToScreen(navController, ScreenRoutes.ComicDetails.name)
@@ -91,8 +91,8 @@ fun MarvelNavHost(
         }
         composable(route = ScreenRoutes.ComicSearch.name){
 
-            val searchQuery by searchViewModel.searchQuery
-            val comicsResults = searchViewModel.searchedComics.collectAsLazyPagingItems()
+            val searchQuery by searchViewModel!!.searchQuery
+            val comicsResults = searchViewModel!!.searchedComics.collectAsLazyPagingItems()
 
             SearchScreen(
                 copyright = copyright,
