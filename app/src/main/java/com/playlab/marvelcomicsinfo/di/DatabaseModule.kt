@@ -10,16 +10,16 @@ import androidx.room.Room
 import com.playlab.marvelcomicsinfo.data.local.MarvelDatabase
 import com.playlab.marvelcomicsinfo.data.preferences.PreferencesDataStore
 import com.playlab.marvelcomicsinfo.data.remote.ApiInterface
-import com.playlab.marvelcomicsinfo.model.Comic
 import com.playlab.marvelcomicsinfo.repository.ComicRepository
 import com.playlab.marvelcomicsinfo.repository.DefaultComicRepository
+import com.playlab.marvelcomicsinfo.repository.DefaultThemeRepository
+import com.playlab.marvelcomicsinfo.repository.ThemeRepository
 import com.playlab.marvelcomicsinfo.util.Constants.MARVEL_DATABASE
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -57,4 +57,12 @@ object DatabaseModule {
         dataStore: PreferencesDataStore
         ) : ComicRepository =
         DefaultComicRepository(apiInterface, marvelDatabase, dataStore)
+
+    @Provides
+    @Singleton
+    fun provideDefaultThemeRepository(
+        dataStore: PreferencesDataStore
+    ): ThemeRepository =
+        DefaultThemeRepository(dataStore)
+
 }
