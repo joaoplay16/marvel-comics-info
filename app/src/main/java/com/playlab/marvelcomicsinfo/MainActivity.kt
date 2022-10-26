@@ -59,7 +59,7 @@ fun MarvelNavHost(
 
     val comics = comicsViewModel?.dbComics?.collectAsLazyPagingItems()
     val copyright = comicsViewModel?.copyright?.collectAsState(null)?.value ?: ""
-    val isThemeStored = themeViewModel?.isDarkTheme?.collectAsState(null)?.value ?: false
+    val isThemeStored by themeViewModel!!.isDarkTheme.collectAsState(initial = null)
     val isSystemInDarkTheme = isSystemInDarkTheme()
 
     NavHost(
