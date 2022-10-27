@@ -12,8 +12,8 @@ import com.playlab.marvelcomicsinfo.data.preferences.PreferencesDataStore
 import com.playlab.marvelcomicsinfo.data.remote.ApiInterface
 import com.playlab.marvelcomicsinfo.repository.ComicRepository
 import com.playlab.marvelcomicsinfo.repository.DefaultComicRepository
-import com.playlab.marvelcomicsinfo.repository.DefaultThemeRepository
-import com.playlab.marvelcomicsinfo.repository.ThemeRepository
+import com.playlab.marvelcomicsinfo.repository.DefaultPreferencesRepository
+import com.playlab.marvelcomicsinfo.repository.PreferencesRepository
 import com.playlab.marvelcomicsinfo.util.Constants.MARVEL_DATABASE
 import dagger.Module
 import dagger.Provides
@@ -54,15 +54,14 @@ object DatabaseModule {
     fun provideDefaultComicRepository(
         apiInterface: ApiInterface,
         marvelDatabase: MarvelDatabase,
-        dataStore: PreferencesDataStore
         ) : ComicRepository =
-        DefaultComicRepository(apiInterface, marvelDatabase, dataStore)
+        DefaultComicRepository(apiInterface, marvelDatabase)
 
     @Provides
     @Singleton
     fun provideDefaultThemeRepository(
         dataStore: PreferencesDataStore
-    ): ThemeRepository =
-        DefaultThemeRepository(dataStore)
+    ): PreferencesRepository =
+        DefaultPreferencesRepository(dataStore)
 
 }

@@ -16,6 +16,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import com.playlab.marvelcomicsinfo.model.Comic
+import com.playlab.marvelcomicsinfo.screens.PreferencesViewModel
 import com.playlab.marvelcomicsinfo.screens.ScreenRoutes
 import com.playlab.marvelcomicsinfo.screens.details.ComicDetailScreen
 import com.playlab.marvelcomicsinfo.screens.home.ComicsScreen
@@ -23,7 +24,6 @@ import com.playlab.marvelcomicsinfo.screens.home.ComicsViewModel
 import com.playlab.marvelcomicsinfo.screens.search.SearchScreen
 import com.playlab.marvelcomicsinfo.screens.search.SearchViewModel
 import com.playlab.marvelcomicsinfo.ui.theme.MarvelComicsInfoTheme
-import com.playlab.marvelcomicsinfo.ui.theme.ThemeViewModel
 import com.playlab.marvelcomicsinfo.util.Constants.COMIC_NAV_KEY
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -32,16 +32,16 @@ import java.util.*
 @ExperimentalPagingApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val themeViewModel by viewModels<ThemeViewModel>()
+    private val preferencesViewModel by viewModels<PreferencesViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-           val isDarkThemeStoredValue by themeViewModel.isDarkTheme.collectAsState(null)
+           val isDarkThemeStoredValue by preferencesViewModel.isDarkTheme.collectAsState(null)
             MarvelComicsInfoTheme(
                 darkTheme = isDarkThemeStoredValue ?: isSystemInDarkTheme()
             ) {
-                MarvelNavHost(themeViewModel = themeViewModel)
+                MarvelNavHost(preferencesViewModel = preferencesViewModel)
             }
         }
     }
@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
 fun MarvelNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    themeViewModel: ThemeViewModel? = hiltViewModel(),
+    preferencesViewModel: PreferencesViewModel? = hiltViewModel(),
     comicsViewModel: ComicsViewModel? = hiltViewModel(),
     searchViewModel: SearchViewModel? = hiltViewModel()
 ) {
@@ -61,7 +61,7 @@ fun MarvelNavHost(
     val comics = comicsViewModel?.dbComics?.collectAsLazyPagingItems()
     val year = Calendar.getInstance().get(Calendar.YEAR)
     val copyright ="© Marvel $year"
-    val isDarkThemePreferenceValue by themeViewModel!!.isDarkTheme.collectAsState(initial = null)
+    val isDarkThemePreferenceValue by preferencesViewModel!!.isDarkTheme.collectAsState(initial = null)
     val isSystemInDarkTheme = isSystemInDarkTheme()
 
     NavHost(
@@ -75,7 +75,7 @@ fun MarvelNavHost(
                 copyright = copyright,
                 onSearchClicked = { navigateToScreen(navController, ScreenRoutes.ComicSearch.name)},
                 onSwitchClicked = {
-                    themeViewModel?.switchTheme(isDarkThemePreferenceValue ?: isSystemInDarkTheme)
+                    preferencesViewModel?.switchTheme(isDarkThemePreferenceValue ?: isSystemInDarkTheme)
                 },
                 onComicClick = {
                     navController.currentBackStackEntry?.savedStateHandle?.set(COMIC_NAV_KEY, it)

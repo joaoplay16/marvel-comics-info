@@ -7,7 +7,6 @@ import androidx.paging.PagingData
 import com.playlab.marvelcomicsinfo.data.local.MarvelDatabase
 import com.playlab.marvelcomicsinfo.data.paging.MarvelRemoteMediator
 import com.playlab.marvelcomicsinfo.data.paging.SearchPagingSource
-import com.playlab.marvelcomicsinfo.data.preferences.PreferencesDataStore
 import com.playlab.marvelcomicsinfo.data.remote.ApiInterface
 import com.playlab.marvelcomicsinfo.model.Comic
 import com.playlab.marvelcomicsinfo.util.Constants.ITEMS_PER_PAGE
@@ -17,8 +16,7 @@ import javax.inject.Inject
 @ExperimentalPagingApi
 class DefaultComicRepository @Inject constructor(
     private val apiInterface: ApiInterface,
-    private val marvelDatabase: MarvelDatabase,
-    private val dataStore: PreferencesDataStore
+    private val marvelDatabase: MarvelDatabase
 ) : ComicRepository {
 
     override fun getAllComics(): Flow<PagingData<Comic>> {
@@ -27,8 +25,7 @@ class DefaultComicRepository @Inject constructor(
             config = PagingConfig(pageSize = ITEMS_PER_PAGE),
             remoteMediator = MarvelRemoteMediator(
                 apiInterface = apiInterface,
-                marvelDatabase = marvelDatabase,
-                dataStore = dataStore,
+                marvelDatabase = marvelDatabase
             ),
             pagingSourceFactory = pagingSourceFactory
         ).flow

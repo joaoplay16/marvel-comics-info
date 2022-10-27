@@ -7,7 +7,6 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.playlab.marvelcomicsinfo.data.local.MarvelDatabase
-import com.playlab.marvelcomicsinfo.data.preferences.PreferencesDataStore
 import com.playlab.marvelcomicsinfo.data.remote.ApiInterface
 import com.playlab.marvelcomicsinfo.model.Comic
 import com.playlab.marvelcomicsinfo.model.MarvelRemoteKeys
@@ -18,7 +17,6 @@ import com.playlab.marvelcomicsinfo.util.getOffsetByPage
 class MarvelRemoteMediator(
     private val apiInterface: ApiInterface,
     private val marvelDatabase: MarvelDatabase,
-    private val dataStore: PreferencesDataStore
 ) : RemoteMediator<Int, Comic>() {
 
     private val marvelComicDao = marvelDatabase.marvelComicDao()
@@ -87,8 +85,6 @@ class MarvelRemoteMediator(
                         nextPage = nextPage
                     )
                 }
-
-                dataStore.saveCopyright(response.copyright)
 
                 marvelRemoteKeysDao.addAllRemoteKeys(remoteKeys = keys)
                 marvelComicDao.addComics(comics = comics)
