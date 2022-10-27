@@ -36,9 +36,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-           val darkTheme by themeViewModel.isDarkTheme.collectAsState(null)
+           val isDarkThemeStoredValue by themeViewModel.isDarkTheme.collectAsState(null)
             MarvelComicsInfoTheme(
-                darkTheme = darkTheme ?: isSystemInDarkTheme()
+                darkTheme = isDarkThemeStoredValue ?: isSystemInDarkTheme()
             ) {
                 MarvelNavHost(themeViewModel = themeViewModel)
             }
@@ -59,7 +59,7 @@ fun MarvelNavHost(
 
     val comics = comicsViewModel?.dbComics?.collectAsLazyPagingItems()
     val copyright = comicsViewModel?.copyright?.collectAsState(null)?.value ?: ""
-    val isThemeStored by themeViewModel!!.isDarkTheme.collectAsState(initial = null)
+    val isDarkThemePreferenceValue by themeViewModel!!.isDarkTheme.collectAsState(initial = null)
     val isSystemInDarkTheme = isSystemInDarkTheme()
 
     NavHost(
@@ -72,7 +72,9 @@ fun MarvelNavHost(
                 items = comics,
                 copyright = copyright,
                 onSearchClicked = { navigateToScreen(navController, ScreenRoutes.ComicSearch.name)},
-                onSwitchClicked = { themeViewModel?.switchTheme(isThemeStored, isSystemInDarkTheme) },
+                onSwitchClicked = {
+                    themeViewModel?.switchTheme(isDarkThemePreferenceValue ?: isSystemInDarkTheme)
+                },
                 onComicClick = {
                     navController.currentBackStackEntry?.savedStateHandle?.set(COMIC_NAV_KEY, it)
                     navigateToScreen(navController, ScreenRoutes.ComicDetails.name)

@@ -14,13 +14,9 @@ class ThemeViewModel @Inject constructor(
 
     val isDarkTheme = themeRepository.isDarkTheme()
 
-    fun switchTheme(storedThemeValue: Boolean?, isSystemInDarkTheme: Boolean){
+    fun switchTheme(isDarkTheme: Boolean){
         viewModelScope.launch {
-            if (storedThemeValue == null) {
-                themeRepository.setIsDarkTheme(!isSystemInDarkTheme)
-            } else {
-                themeRepository.setIsDarkTheme(!storedThemeValue)
-             }
+            themeRepository.setIsDarkTheme(!isDarkTheme)
         }
     }
 }
