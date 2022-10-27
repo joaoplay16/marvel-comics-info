@@ -26,6 +26,7 @@ import com.playlab.marvelcomicsinfo.ui.theme.MarvelComicsInfoTheme
 import com.playlab.marvelcomicsinfo.ui.theme.ThemeViewModel
 import com.playlab.marvelcomicsinfo.util.Constants.COMIC_NAV_KEY
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @ExperimentalCoilApi
 @ExperimentalPagingApi
@@ -58,7 +59,8 @@ fun MarvelNavHost(
 ) {
 
     val comics = comicsViewModel?.dbComics?.collectAsLazyPagingItems()
-    val copyright = comicsViewModel?.copyright?.collectAsState(null)?.value ?: ""
+    val year = Calendar.getInstance().get(Calendar.YEAR)
+    val copyright ="© Marvel $year"
     val isDarkThemePreferenceValue by themeViewModel!!.isDarkTheme.collectAsState(initial = null)
     val isSystemInDarkTheme = isSystemInDarkTheme()
 
