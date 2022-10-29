@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import com.playlab.marvelcomicsinfo.data.local.MarvelDatabase
+import com.playlab.marvelcomicsinfo.data.local.MarvelDatabaseAndroidTest
 import com.playlab.marvelcomicsinfo.data.preferences.PreferencesDataStore
 import dagger.Module
 import dagger.Provides
@@ -22,15 +23,26 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object TestDatabaseModule {
 
-    @Named("test_db")
+    @Named("test_paging_db")
     @Provides
     @Singleton
-    fun provideDatabase(
+    fun providePagingDatabase(
         @ApplicationContext context: Context
     ): MarvelDatabase =
         Room.inMemoryDatabaseBuilder(
             context,
             MarvelDatabase::class.java
+        ).allowMainThreadQueries().build()
+
+    @Named("test_db")
+    @Provides
+    @Singleton
+    fun provideDatabase(
+        @ApplicationContext context: Context
+    ): MarvelDatabaseAndroidTest =
+        Room.inMemoryDatabaseBuilder(
+            context,
+            MarvelDatabaseAndroidTest::class.java
         ).allowMainThreadQueries().build()
 
     @OptIn(ExperimentalCoroutinesApi::class)
