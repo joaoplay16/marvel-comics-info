@@ -11,4 +11,5 @@ import com.playlab.marvelcomicsinfo.model.MarvelRemoteKeys
 @TypeConverters(Converters::class)
 abstract class MarvelDatabaseAndroidTest : RoomDatabase(){
     abstract fun marvelComicDao(): MarvelComicDaoAndroidTest
+    abstract fun marvelRemoteKeysDao(): MarvelRemoteKeysDao
 }
