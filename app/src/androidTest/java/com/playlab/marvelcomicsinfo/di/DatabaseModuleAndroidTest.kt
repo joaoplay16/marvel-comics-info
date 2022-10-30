@@ -21,7 +21,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object TestDatabaseModule {
+object DatabaseModuleAndroidTest {
 
     @Named("test_paging_db")
     @Provides
