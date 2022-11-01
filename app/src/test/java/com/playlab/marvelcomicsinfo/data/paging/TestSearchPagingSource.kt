@@ -1,6 +1,8 @@
 package com.playlab.marvelcomicsinfo.data.paging
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.paging.PagingSource
+import com.google.common.truth.Truth.assertThat
 import com.playlab.marvelcomicsinfo.MainCoroutineRule
 import com.playlab.marvelcomicsinfo.data.remote.ApiInterface
 import com.playlab.marvelcomicsinfo.model.Comic
@@ -8,8 +10,14 @@ import com.playlab.marvelcomicsinfo.model.ComicResponse
 import com.playlab.marvelcomicsinfo.model.Data
 import com.playlab.marvelcomicsinfo.model.Thumbnail
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
+import org.junit.rules.ExpectedException
+import org.mockito.ArgumentMatchers
 import org.mockito.BDDMockito.*
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
@@ -56,5 +64,14 @@ class TestSearchPagingSource {
     fun setup() {
         MockitoAnnotations.initMocks(this)
         searchPagingSource = SearchPagingSource(api, "")
+    }
+
+    @Test
+    fun `reviews paging source load - failure - exception thrown` () = runTest {
+       doThrow(NullPointerException()).`when`(api).getComics()
+
+//        willThrow(NullPointerException()).given(
+//            api
+//        ).getComics()
     }
 }
