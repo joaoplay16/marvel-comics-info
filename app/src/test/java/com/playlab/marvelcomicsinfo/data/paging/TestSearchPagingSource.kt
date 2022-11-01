@@ -11,7 +11,6 @@ import com.playlab.marvelcomicsinfo.model.Data
 import com.playlab.marvelcomicsinfo.model.Thumbnail
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -84,5 +83,27 @@ class TestSearchPagingSource {
                 )
             )
         ).isInstanceOf(PagingSource.LoadResult.Error::class.java)
+    }
+
+    @Test
+    fun `search paging source load - failure - received null` () = runTest {
+        given(api.getComics(
+            ArgumentMatchers.anyString(),
+            ArgumentMatchers.anyString(),
+            ArgumentMatchers.anyString(),
+            ArgumentMatchers.anyInt(),
+            ArgumentMatchers.anyInt(),
+            ArgumentMatchers.anyString()
+        )).willReturn(null)
+
+        val expectedResult = PagingSource.LoadResult.Error<Int, Comic>(NullPointerException())
+
+        assertThat(searchPagingSource.load(
+            PagingSource.LoadParams.Refresh(
+                key = 0,
+                loadSize = 1,
+                placeholdersEnabled = false
+            )).toString()
+        ).isEqualTo(expectedResult.toString())
     }
 }
