@@ -12,11 +12,9 @@ import com.playlab.marvelcomicsinfo.model.Thumbnail
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.ExpectedException
 import org.mockito.ArgumentMatchers
 import org.mockito.BDDMockito.*
 import org.mockito.Mock
@@ -73,5 +71,18 @@ class TestSearchPagingSource {
 //        willThrow(NullPointerException()).given(
 //            api
 //        ).getComics()
+    }
+
+    @Test
+    fun `reviews paging source load - failure - returns loading error` () = runTest {
+        assertThat(
+            searchPagingSource.load(
+                PagingSource.LoadParams.Refresh(
+                    key = 0,
+                    loadSize = 1,
+                    placeholdersEnabled = false
+                )
+            )
+        ).isInstanceOf(PagingSource.LoadResult.Error::class.java)
     }
 }
