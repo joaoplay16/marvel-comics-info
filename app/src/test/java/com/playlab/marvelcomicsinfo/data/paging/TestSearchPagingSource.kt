@@ -127,4 +127,29 @@ class TestSearchPagingSource {
         assertThat(result).isEqualTo(expectedResult)
     }
 
+    @Test
+    fun `search paging source append - success` () = runTest {
+
+        given(api.searchComics(
+            any(), any(), any(), any(), any(), any(), any()
+        )
+        ).willReturn(searchResponse)
+
+        val expectedResult = PagingSource.LoadResult.Page(
+            data = searchResponse.data!!.results!!,
+            prevKey = 1,
+            nextKey = 3
+        )
+
+        val result = searchPagingSource.load(
+            PagingSource.LoadParams.Refresh(
+                key = 2,
+                loadSize = 1,
+                placeholdersEnabled = false
+            )
+        )
+
+        assertThat(result).isEqualTo(expectedResult)
+    }
+
 }
