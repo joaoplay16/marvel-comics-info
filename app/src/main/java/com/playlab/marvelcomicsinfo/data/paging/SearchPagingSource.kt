@@ -1,6 +1,5 @@
 package com.playlab.marvelcomicsinfo.data.paging
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.playlab.marvelcomicsinfo.data.remote.ApiInterface
@@ -14,12 +13,10 @@ class SearchPagingSource(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Comic> {
         val currentPage = params.key ?: 1
-        Log.d("SearchPagingSource", "params.key ${params.key} size ${params.loadSize} placeholder ${params.placeholdersEnabled}")
 
         return try {
             val response = apiInterface.searchComics(query = query, offset = getOffsetByPage(currentPage)).data?.results
             val endOfPaginationReached = response == null || response.isEmpty()
-            Log.d("SearchPagingSource", "$endOfPaginationReached")
             if (response != null && response.isNotEmpty()) {
                 LoadResult.Page(
                     data = response,
