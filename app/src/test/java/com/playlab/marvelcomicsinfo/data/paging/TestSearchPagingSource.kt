@@ -16,7 +16,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
 import org.mockito.Mockito.doThrow
@@ -59,16 +58,18 @@ class TestSearchPagingSource {
     }
 
     @Test
-    fun `reviews paging source load - failure - exception thrown` () = runTest {
-       doThrow(NullPointerException()).`when`(api).getComics()
+    fun `search paging source load - failure - exception thrown` () = runTest {
+       doThrow(NullPointerException()).`when`(api).searchComics(
+           any(), any(), any(), any(), any(), any(), any()
+       )
 
 //        willThrow(NullPointerException()).given(
 //            api
-//        ).getComics()
+//        ).searchComics()
     }
 
     @Test
-    fun `reviews paging source load - failure - returns loading error` () = runTest {
+    fun `search paging source load - failure - returns loading error` () = runTest {
         assertThat(
             searchPagingSource.load(
                 PagingSource.LoadParams.Refresh(
@@ -82,13 +83,8 @@ class TestSearchPagingSource {
 
     @Test
     fun `search paging source load - failure - received null` () = runTest {
-        given(api.getComics(
-            ArgumentMatchers.anyString(),
-            ArgumentMatchers.anyString(),
-            ArgumentMatchers.anyString(),
-            ArgumentMatchers.anyInt(),
-            ArgumentMatchers.anyInt(),
-            ArgumentMatchers.anyString()
+        given(api.searchComics(
+            any(), any(), any(), any(), any(), any(), any()
         )).willReturn(null)
 
         val expectedResult = PagingSource.LoadResult.Error<Int, Comic>(NullPointerException())
