@@ -18,7 +18,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
 import org.mockito.Mock
-import org.mockito.Mockito.doThrow
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
 
@@ -59,13 +58,22 @@ class TestSearchPagingSource {
 
     @Test
     fun `search paging source load - failure - exception thrown` () = runTest {
-       doThrow(NullPointerException()).`when`(api).searchComics(
-           any(), any(), any(), any(), any(), any(), any()
-       )
+        val error = NullPointerException()
 
-//        willThrow(NullPointerException()).given(
-//            api
-//        ).searchComics()
+        given(api.searchComics(  any(), any(), any(), any(), any(), any(), any() ))
+            .willThrow(error)
+
+        val expectedResult = PagingSource.LoadResult.Error<Int, Comic>(error)
+
+        assertThat(
+            searchPagingSource.load(
+                PagingSource.LoadParams.Refresh(
+                    key = 0,
+                    loadSize = 1,
+                    placeholdersEnabled = false
+                )
+            )
+        ).isEqualTo(expectedResult)
     }
 
     @Test
