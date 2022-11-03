@@ -146,7 +146,7 @@ class TestSearchPagingSource {
         )
 
         val result = searchPagingSource.load(
-            PagingSource.LoadParams.Refresh(
+            PagingSource.LoadParams.Append(
                 key = 2,
                 loadSize = 1,
                 placeholdersEnabled = false
