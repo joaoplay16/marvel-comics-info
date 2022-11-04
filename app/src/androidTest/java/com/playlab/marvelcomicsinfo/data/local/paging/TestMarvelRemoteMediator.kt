@@ -57,7 +57,7 @@ class TestMarvelRemoteMediator {
     }
 
     companion object {
-        val comics = ComicResponse(
+        val comicResponse = ComicResponse(
             copyright = "",
             data = Data(
                 limit = Constants.ITEMS_PER_PAGE,
@@ -69,12 +69,20 @@ class TestMarvelRemoteMediator {
                 )
             )
         )
+
+        val emptyComicResponse = ComicResponse(
+            copyright = "",
+            data = Data(
+                limit = Constants.ITEMS_PER_PAGE,
+                results = listOf()
+            )
+        )
     }
 
     @Test
     fun refreshLoadReturnsSuccessResultWhenMoreDataIsPresent() = runTest {
        given( api.getComics(any(), any(), any(), any(), any(), any()) )
-        .willReturn(comics)
+        .willReturn(comicResponse)
 
         val remoteMediator = MarvelRemoteMediator(
             api,
@@ -92,5 +100,28 @@ class TestMarvelRemoteMediator {
 
         assertThat( result is MediatorResult.Success ).isTrue()
         assertThat( ( result as MediatorResult.Success ).endOfPaginationReached ).isFalse()
+    }
+
+    @Test
+    fun refreshLoadSuccessAndEndOfPaginationWhenNoMoreData() = runTest {
+        given( api.getComics(any(), any(), any(), any(), any(), any()) )
+            .willReturn(emptyComicResponse)
+
+        val remoteMediator = MarvelRemoteMediator(
+            api,
+            db
+        )
+
+        val pagingState = PagingState<Int, Comic>(
+            pages = listOf<Page<Int, Comic>>(),
+            anchorPosition = null,
+            config =  PagingConfig(10),
+            leadingPlaceholderCount = 10
+        )
+
+        val result = remoteMediator.load(LoadType.REFRESH, pagingState)
+
+        assertThat( result is MediatorResult.Success ).isTrue()
+        assertThat( ( result as MediatorResult.Success ).endOfPaginationReached ).isTrue()
     }
 }
