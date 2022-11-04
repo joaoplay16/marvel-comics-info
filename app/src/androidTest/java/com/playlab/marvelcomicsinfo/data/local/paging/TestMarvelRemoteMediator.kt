@@ -58,7 +58,6 @@ class TestMarvelRemoteMediator {
 
     companion object {
         val comicResponse = ComicResponse(
-            copyright = "",
             data = Data(
                 limit = Constants.ITEMS_PER_PAGE,
                 results = listOf(
@@ -71,7 +70,6 @@ class TestMarvelRemoteMediator {
         )
 
         val emptyComicResponse = ComicResponse(
-            copyright = "",
             data = Data(
                 limit = Constants.ITEMS_PER_PAGE,
                 results = listOf()

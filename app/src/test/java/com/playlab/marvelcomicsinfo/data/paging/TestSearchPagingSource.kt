@@ -39,7 +39,6 @@ class TestSearchPagingSource {
 
     companion object {
         val searchResponse = ComicResponse(
-            copyright = "",
             data = Data(
                 limit = Constants.ITEMS_PER_PAGE,
                 results = listOf(
