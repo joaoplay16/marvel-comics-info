@@ -124,4 +124,26 @@ class TestMarvelRemoteMediator {
         assertThat( result is MediatorResult.Success ).isTrue()
         assertThat( ( result as MediatorResult.Success ).endOfPaginationReached ).isTrue()
     }
+
+    @Test
+    fun refreshLoadReturnsErrorResultWhenErrorOccurs() = runTest {
+        given( api.getComics(any(), any(), any(), any(), any(), any()) )
+            .willThrow(RuntimeException())
+
+        val remoteMediator = MarvelRemoteMediator(
+            api,
+            db
+        )
+
+        val pagingState = PagingState<Int, Comic>(
+            pages = listOf<Page<Int, Comic>>(),
+            anchorPosition = null,
+            config =  PagingConfig(10),
+            leadingPlaceholderCount = 10
+        )
+
+        val result = remoteMediator.load(LoadType.REFRESH, pagingState)
+
+        assertThat( result is MediatorResult.Error ).isTrue()
+    }
 }
