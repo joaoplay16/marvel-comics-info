@@ -47,8 +47,8 @@ fun ComicDetailScreen(comic: Comic, copyright: String?, navHostController: NavHo
                 },
             )
         },
-    ) {
-        Column {
+    ) { paddingValues ->
+        Column(Modifier.padding(paddingValues)) {
             LazyColumn(Modifier.weight(1f)) {
                 item {
                     AsyncImage(
