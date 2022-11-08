@@ -1,57 +1,46 @@
 package com.playlab.marvelcomicsinfo.data.paging
 
-import androidx.paging.ExperimentalPagingApi
-import com.playlab.marvelcomicsinfo.model.Comic
-import com.playlab.marvelcomicsinfo.model.Thumbnail
-import com.playlab.marvelcomicsinfo.repository.FakeComicRepository
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.paging.AsyncPagingDataDiffer
+import androidx.paging.PagingData
+import com.google.common.truth.Truth
+import com.playlab.PagingDataTestUtils
+import com.playlab.PagingDataTestUtils.Companion.myHelperTransformFunction
+import com.playlab.marvelcomicsinfo.MainCoroutineRule
+import com.playlab.stubs.ComicsStub
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.*
-import org.junit.After
-import org.junit.Before
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
+import org.junit.Rule
+import org.junit.Test
 
-
-@RunWith(MockitoJUnitRunner::class)
-@OptIn(
-    ExperimentalPagingApi::class,
-    ExperimentalCoroutinesApi::class)
 @ExperimentalCoroutinesApi
 class PagingDataTrasformTest {
 
-    private val testScope = TestScope()
-    private val testDispatcher = StandardTestDispatcher(testScope.testScheduler)
+    @get:Rule
+    var instantTaskExecutorRule =  InstantTaskExecutorRule()
 
-    @Mock
-    lateinit var fakeComicRepository: FakeComicRepository
+    @get:Rule
+    var mainCoroutineRule = MainCoroutineRule()
 
-    companion object {
-        val comics = listOf<Comic>(
-            Comic(id = "01",
-                "Hulk",
-                Thumbnail("path", ".jpg"),
-                null, null),
+    @Test
+    fun `transform paging data, returns items`() = runTest {
 
-            Comic(id = "02",
-                "Hulk 2",
-                Thumbnail("path", ".jpg"),
-                null, null),
-
-            Comic(id = "03",
-                "Wolverine",
-                Thumbnail("path", ".jpg"),
-                null, null),
+        val differ = AsyncPagingDataDiffer(
+            diffCallback = PagingDataTestUtils.MyDiffCallback(),
+            updateCallback = PagingDataTestUtils.NoopListCallback(),
+            workerDispatcher = Dispatchers.Main
         )
-    }
-    @Before
-    fun setUp() {
-        Dispatchers.setMain(testDispatcher)
-    }
 
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
+        val pagingData = PagingData.from(ComicsStub.comics)
+
+        differ.submitData(pagingData.myHelperTransformFunction("Hulk"))
+
+        println("DATA ${differ.snapshot().items}")
+
+        advanceUntilIdle()
+
+        Truth.assertThat(differ.snapshot().items).isNotEmpty()
     }
 }
