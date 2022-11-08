@@ -9,13 +9,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 @OptIn(ExperimentalPagingApi::class)
 open class FakeComicRepository : ComicRepository {
 
-    private var comics: MutableStateFlow<PagingData<Comic>> = MutableStateFlow(PagingData.empty())
+    var pagingData = PagingData.empty<Comic>()
 
     override fun getAllComics(): Flow<PagingData<Comic>> {
-        return comics
+        return MutableStateFlow(pagingData)
     }
 
     override fun searchComics(query: String): Flow<PagingData<Comic>> {
-       return comics
+       return MutableStateFlow(pagingData)
     }
 }
