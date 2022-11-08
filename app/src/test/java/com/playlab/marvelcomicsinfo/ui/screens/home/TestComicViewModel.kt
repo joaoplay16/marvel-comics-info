@@ -7,7 +7,6 @@ import androidx.paging.PagingData
 import com.google.common.truth.Truth.assertThat
 import com.playlab.PagingDataTestUtils
 import com.playlab.marvelcomicsinfo.MainCoroutineRule
-import com.playlab.marvelcomicsinfo.data.paging.PagingDataTrasformTest.Companion.comics
 import com.playlab.marvelcomicsinfo.repository.FakeComicRepository
 import com.playlab.marvelcomicsinfo.screens.home.ComicsViewModel
 import com.playlab.stubs.ComicsStub
@@ -69,6 +68,6 @@ class TestComicViewModel {
         val data = differ.snapshot().items
 
         assertThat(data).isNotEmpty()
-        assertThat(data).isEqualTo(comics)
+        assertThat(data).isEqualTo(ComicsStub.comics)
     }
 }
