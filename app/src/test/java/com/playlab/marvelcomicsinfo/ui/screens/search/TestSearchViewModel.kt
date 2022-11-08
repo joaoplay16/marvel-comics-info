@@ -8,12 +8,10 @@ import com.playlab.marvelcomicsinfo.MainCoroutineRule
 import com.playlab.marvelcomicsinfo.model.Comic
 import com.playlab.marvelcomicsinfo.repository.FakeComicRepository
 import com.playlab.marvelcomicsinfo.screens.search.SearchViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.*
-import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,11 +34,6 @@ class TestSearchViewModel {
 
     @Mock
     lateinit var fakeComicRepository: FakeComicRepository
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
-    }
 
     @Test
     fun `search comic with empty query string, returns valid empty data`() = runTest {
