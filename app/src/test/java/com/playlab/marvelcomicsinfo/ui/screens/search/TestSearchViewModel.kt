@@ -9,14 +9,10 @@ import com.playlab.marvelcomicsinfo.repository.FakeComicRepository
 import com.playlab.marvelcomicsinfo.screens.home.ComicsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 @OptIn(
     ExperimentalPagingApi::class,
     ExperimentalCoroutinesApi::class)
@@ -28,13 +24,11 @@ class TestSearchViewModel {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    @Mock
-    lateinit var fakeComicRepository: FakeComicRepository
 
     @Test
     fun `search comics, returns valid data`() = runTest {
 
-        val comicsViewModel = ComicsViewModel(fakeComicRepository)
+        val comicsViewModel = ComicsViewModel(FakeComicRepository())
 
         val data = comicsViewModel.dbComics
 
