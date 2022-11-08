@@ -12,16 +12,11 @@ import com.playlab.marvelcomicsinfo.screens.home.ComicsViewModel
 import com.playlab.stubs.ComicsStub
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.kotlin.given
 
-@RunWith(MockitoJUnitRunner::class)
 @OptIn(
     ExperimentalPagingApi::class,
     ExperimentalCoroutinesApi::class)
@@ -33,19 +28,14 @@ class TestComicViewModel {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    @Mock
-    lateinit var fakeComicRepository: FakeComicRepository
-
-
-
     @Test
     fun `get all comics, returns valid data`() = runTest {
 
-        val comicsViewModel = ComicsViewModel(fakeComicRepository)
+        val comicsViewModel = ComicsViewModel(FakeComicRepository())
 
-        val data = comicsViewModel.dbComics
+        val pagingData = comicsViewModel.dbComics.first()
 
-        assertThat(data.first()).isInstanceOf(PagingData::class.java)
+        assertThat(pagingData).isInstanceOf(PagingData::class.java)
     }
 
     @Test
@@ -57,17 +47,16 @@ class TestComicViewModel {
             workerDispatcher = Dispatchers.Main
         )
 
-        given(fakeComicRepository.getAllComics()).willReturn(
-            flow { emit(PagingData.from(ComicsStub.comics)) }
-        )
+        val fakeComicRepository = FakeComicRepository()
+        fakeComicRepository.pagingData = PagingData.from(ComicsStub.comics)
 
         val comicsViewModel = ComicsViewModel(fakeComicRepository)
 
         differ.submitData(comicsViewModel.dbComics.first())
 
-        val data = differ.snapshot().items
+        val comicItems = differ.snapshot().items
 
-        assertThat(data).isNotEmpty()
-        assertThat(data).isEqualTo(ComicsStub.comics)
+        assertThat(comicItems).isNotEmpty()
+        assertThat(comicItems).isEqualTo(ComicsStub.comics)
     }
 }
