@@ -5,20 +5,16 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import com.google.common.truth.Truth.assertThat
 import com.playlab.marvelcomicsinfo.MainCoroutineRule
-import com.playlab.marvelcomicsinfo.model.Comic
 import com.playlab.marvelcomicsinfo.repository.FakeComicRepository
-import com.playlab.marvelcomicsinfo.screens.search.SearchViewModel
+import com.playlab.marvelcomicsinfo.screens.home.ComicsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.kotlin.any
-import org.mockito.kotlin.given
 
 @RunWith(MockitoJUnitRunner::class)
 @OptIn(
@@ -36,16 +32,12 @@ class TestSearchViewModel {
     lateinit var fakeComicRepository: FakeComicRepository
 
     @Test
-    fun `search comic with empty query string, returns valid empty data`() = runTest {
+    fun `search comics, returns valid data`() = runTest {
 
-        val flowPagingData = MutableStateFlow<PagingData<Comic>>(PagingData.empty())
+        val comicsViewModel = ComicsViewModel(fakeComicRepository)
 
-        given(fakeComicRepository.searchComics(any())).willReturn(flowPagingData)
+        val data = comicsViewModel.dbComics
 
-        val searchViewModel = SearchViewModel(fakeComicRepository)
-        searchViewModel.searchComics("")
-
-        val result = searchViewModel.searchedComics.firstOrNull()
-        assertThat(result).isNotNull()
+        assertThat(data.first()).isInstanceOf(PagingData::class.java)
     }
 }
