@@ -8,8 +8,8 @@ import com.playlab.marvelcomicsinfo.data.remote.ApiInterface
 import com.playlab.marvelcomicsinfo.model.Comic
 import com.playlab.marvelcomicsinfo.model.ComicResponse
 import com.playlab.marvelcomicsinfo.model.Data
-import com.playlab.marvelcomicsinfo.model.Thumbnail
 import com.playlab.marvelcomicsinfo.util.Constants
+import com.playlab.stubs.ComicsStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -41,11 +41,7 @@ class TestSearchPagingSource {
         val searchResponse = ComicResponse(
             data = Data(
                 limit = Constants.ITEMS_PER_PAGE,
-                results = listOf(
-                    Comic(id = "01",
-                        "title 1",
-                        Thumbnail("path", ".jpg"),
-                        null, null))
+                results = ComicsStub.comics
             )
         )
     }
