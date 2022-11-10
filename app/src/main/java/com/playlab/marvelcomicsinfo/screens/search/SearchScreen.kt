@@ -5,16 +5,14 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.navigation.NavHostController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.compose.LazyPagingItems
 import coil.annotation.ExperimentalCoilApi
 import com.playlab.marvelcomicsinfo.model.Comic
-import com.playlab.marvelcomicsinfo.screens.CopyrightContainer
+import com.playlab.marvelcomicsinfo.screens.components.CopyrightContainer
 import com.playlab.marvelcomicsinfo.screens.ScreenRoutes
-import com.playlab.marvelcomicsinfo.screens.SearchWidget
 import com.playlab.marvelcomicsinfo.screens.common.ListComic
-import kotlin.text.Typography.copyright
+import com.playlab.marvelcomicsinfo.screens.components.SearchWidget
 
 @ExperimentalPagingApi
 @ExperimentalCoilApi

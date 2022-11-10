@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import com.playlab.marvelcomicsinfo.model.Comic
-import com.playlab.marvelcomicsinfo.screens.ComicCard
+import com.playlab.marvelcomicsinfo.screens.components.ComicCard
 
 @Composable
 fun ListComic (

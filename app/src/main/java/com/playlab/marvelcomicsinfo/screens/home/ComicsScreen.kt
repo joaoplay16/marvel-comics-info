@@ -15,9 +15,9 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.compose.LazyPagingItems
 import com.playlab.marvelcomicsinfo.R
 import com.playlab.marvelcomicsinfo.model.Comic
-import com.playlab.marvelcomicsinfo.screens.AppTopAppBar
-import com.playlab.marvelcomicsinfo.screens.CopyrightContainer
+import com.playlab.marvelcomicsinfo.screens.components.CopyrightContainer
 import com.playlab.marvelcomicsinfo.screens.common.ListComic
+import com.playlab.marvelcomicsinfo.screens.components.AppTopAppBar
 import com.playlab.marvelcomicsinfo.ui.animations.LoadingAnimation
 
 @ExperimentalPagingApi

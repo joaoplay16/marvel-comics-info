@@ -26,10 +26,10 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.playlab.marvelcomicsinfo.R
 import com.playlab.marvelcomicsinfo.model.Comic
-import com.playlab.marvelcomicsinfo.screens.AppTopAppBar
-import com.playlab.marvelcomicsinfo.screens.Copyright
-import com.playlab.marvelcomicsinfo.screens.TextInfo
-import com.playlab.marvelcomicsinfo.screens.TextLabel
+import com.playlab.marvelcomicsinfo.screens.components.Copyright
+import com.playlab.marvelcomicsinfo.screens.components.TextInfo
+import com.playlab.marvelcomicsinfo.screens.components.TextLabel
+import com.playlab.marvelcomicsinfo.screens.components.AppTopAppBar
 
 @ExperimentalPagingApi
 @Composable
