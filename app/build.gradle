@@ -52,6 +52,13 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    testOptions {
+        // Used for Unit testing Android dependent elements in /test folder.
+        // Can introduce regressions to the tests, which are hard to debug
+        // and might allow failing tests to pass.
+        // Using here as a last resort.
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
