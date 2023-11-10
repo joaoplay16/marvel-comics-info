@@ -90,23 +90,23 @@ class TestSearchPagingSource {
             any(), any(), any(), any(), any(), any(), any()
         )).willReturn(null)
 
-        val expectedResult = PagingSource.LoadResult.Error<Int, Comic>(NullPointerException())
-
-        assertThat(searchPagingSource.load(
+        val loadResult = searchPagingSource.load(
             PagingSource.LoadParams.Refresh(
                 key = 0,
                 loadSize = 1,
                 placeholdersEnabled = false
-            )).toString()
-        ).isEqualTo(expectedResult.toString())
+            )
+        )
+        assertThat(loadResult).isInstanceOf(PagingSource.LoadResult.Error::class.java)
+        assertThat(loadResult.toString()).containsMatch("java.lang.NullPointerException")
     }
 
     @Test
     fun `search paging source load - success` () = runTest {
 
         given(api.searchComics(
-                any(), any(), any(), any(), any(), any(), any()
-            )
+            any(), any(), any(), any(), any(), any(), any()
+        )
         ).willReturn(searchResponse)
 
         val expectedResult = PagingSource.LoadResult.Page(
