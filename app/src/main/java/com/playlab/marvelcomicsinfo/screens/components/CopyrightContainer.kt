@@ -29,7 +29,6 @@ fun CopyrightContainer(
         copyright?.let {
             Copyright(
                 modifier = Modifier
-                    .weight(0.02f)
                     .background(MaterialTheme.colors.onPrimary),
                 text = stringResource(
                     R.string.data_provided,
