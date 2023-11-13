@@ -3,6 +3,7 @@ package com.playlab.marvelcomicsinfo.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.playlab.marvelcomicsinfo.data.remote.ApiInterface
+import com.playlab.marvelcomicsinfo.exception.ComicNotFoundException
 import com.playlab.marvelcomicsinfo.model.Comic
 import com.playlab.marvelcomicsinfo.util.getOffsetByPage
 
@@ -15,7 +16,10 @@ class SearchPagingSource(
         val currentPage = params.key ?: 1
 
         return try {
-            val response = apiInterface.searchComics(query = query, offset = getOffsetByPage(currentPage)).data?.results
+            val response = apiInterface.searchComics(
+                query = query,
+                offset = getOffsetByPage(currentPage)
+            ).data?.results
             val endOfPaginationReached = response == null || response.isEmpty()
             if (response != null && response.isNotEmpty()) {
                 LoadResult.Page(
@@ -24,11 +28,7 @@ class SearchPagingSource(
                     nextKey = if (endOfPaginationReached) null else currentPage + 1
                 )
             } else {
-                LoadResult.Page(
-                    data = emptyList(),
-                    prevKey = null,
-                    nextKey = null
-                )
+                LoadResult.Error(ComicNotFoundException())
             }
         } catch (e: Exception) {
             LoadResult.Error(e)
