@@ -1,4 +1,5 @@
 <resources >
     <string name="app_name">Comics Info</string>
     <string name="data_provided">Data provided by %1$s</string>
+    <string name="comic_not_found">Comic not found</string>
 </resources>
