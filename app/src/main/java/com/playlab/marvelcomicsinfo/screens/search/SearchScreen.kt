@@ -1,6 +1,5 @@
 package com.playlab.marvelcomicsinfo.screens.search
 
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
@@ -52,12 +51,12 @@ fun SearchScreen(
     LaunchedEffect(
         key1 = comicsResults.itemCount,
         block = {
-            Log.d(
-                "PAGING",
-                "ITEMS ${comicsResults.itemSnapshotList.items}"
-            )
-            if (comicsResults.loadState.append is LoadState.Loading)
+            if (
+                comicsResults.loadState.append is LoadState.NotLoading ||
+                comicsResults.loadState.append is LoadState.Error
+            ) {
                 loading = false
+            }
         }
     )
 
