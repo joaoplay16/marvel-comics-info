@@ -15,7 +15,7 @@ android {
         applicationId "com.playlab.marvelcomicsinfo"
         minSdk 21
         targetSdk 35
-        versionCode 4
+        versionCode 5
         versionName "1.1.2"
 
         testInstrumentationRunner "com.playlab.marvelcomicsinfo.HiltTestRunner"
