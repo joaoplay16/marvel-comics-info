@@ -5,6 +5,7 @@ plugins {
     id "kotlinx-serialization"
     id "dagger.hilt.android.plugin"
     id "com.google.devtools.ksp"
+    id "org.jetbrains.kotlin.plugin.compose"
 }
 
 android {
