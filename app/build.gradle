@@ -141,5 +141,5 @@ dependencies {
 
     // Needed for createComposeRule, but not createAndroidComposeRule:
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.9.0")
 }
