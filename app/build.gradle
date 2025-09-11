@@ -71,7 +71,7 @@ dependencies {
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.9.3"
-    implementation "androidx.compose.runtime:runtime-livedata:1.9.0"
+    implementation "androidx.compose.runtime:runtime-livedata:1.9.1"
     implementation "androidx.activity:activity-compose:1.11.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.9.3"
     implementation "androidx.lifecycle:lifecycle-runtime-testing:2.9.3"
